@@ -57,11 +57,6 @@ async def disks_info(request):
             for partition in psutil.disk_partitions()]}, status=200)
 
 
-@routes.get('/smtool/api/v0.1/data_collector')
-async def collect_info(request):
-    return web.json_response(await db.get_data(), status=200)
-
-
 @routes.get('/smtool/api/v0.1/network_info')
 async def network_info(request):
     print('Reloaded network info', datetime.now())
@@ -84,6 +79,29 @@ async def network_info(request):
                                                   'Multicast': interfaces[network][1].broadcast,
                                                   'Mask for IPv6': interfaces[network][1].netmask
                                                   } for network in interfaces]}, status=200)
+
+
+@routes.get('/smtool/api/v0.1/process_info')
+async def process_info(request):
+    info_dict = list()
+    key = 0
+    for process in psutil.process_iter():
+        try:
+            info_dict.append({'Process name': process.name(),
+                              'PID': process.pid,
+                              'Woken by': process.username(),
+                              'Status': process.status()})
+
+            key += 1
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+
+    return web.json_response({'Process list': info_dict}, status=200)
+
+
+@routes.get('/smtool/api/v0.1/data_collector')
+async def collect_info(request):
+    return web.json_response(await db.get_data(), status=200)
 
 
 app = web.Application()
