@@ -30,4 +30,9 @@ class Database:
 
     async def get_data(self):
         print('Data accesed', str(datetime.now()))
-        return {'Data accesed': str(datetime.now())}
+        return {'Collected data': [{'cpufreq': row[1],
+                                    'availram': row[2],
+                                    'usedram': row[3],
+                                    'availswap': row[4],
+                                    'usedswap': row[5],
+                                    'timestamp': row[6]} for row in self.c.execute("""SELECT * FROM datatable LIMIT 21600""")]}

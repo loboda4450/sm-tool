@@ -1,8 +1,10 @@
 import platform
+import crypt
+import spwd
 from datetime import datetime
 from DataCollector import Database
 
-import psutil as psutil
+import psutil
 from aiohttp import web
 
 db = Database()
@@ -15,6 +17,17 @@ async def get_size(_bytes, suffix="B"):
         if _bytes < factor:
             return f"{_bytes:.2f}{unit}{suffix}"
         _bytes /= factor
+
+
+async def verify(login, passwd):
+    try:
+        enc_pwd = spwd.getspnam(login)[1]
+        if crypt.crypt(passwd, enc_pwd) == enc_pwd:
+            return True
+        else:
+            return False
+    except KeyError:
+        return False
 
 
 @routes.get('/smtool/api/v0.1/platform')
@@ -39,8 +52,7 @@ async def platform_info(request):
         'Max Frequency': f'{cpufreq.max:.2f} Mhz',
         'Min Frequency': f'{cpufreq.min:.2f} Mhz',
         'Total': await get_size(svmem.total),
-        'Total swap': await get_size(swap.total),
-    }, status=200)
+        'Total swap': await get_size(swap.total)}, status=200)
 
 
 @routes.get('/smtool/api/v0.1/disks_info')
@@ -93,13 +105,27 @@ async def process_info(request):
 
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
-
+    print('Reloaded process info', datetime.now())
     return web.json_response({'Process list': info}, status=200)
 
 
 @routes.get('/smtool/api/v0.1/data_collector')
 async def collect_info(request):
     return web.json_response(await db.get_data(), status=200)
+
+
+@routes.get('/smtool/api/v0.1/verify')
+async def verify_access(request):
+    try:
+        login = request.rel_url.query['login']
+        passwd = request.rel_url.query['passwd']
+        verification = await verify(login, passwd)
+        print(f'Login attempt, login={login}, password={passwd}, success={verification}', datetime.now())
+
+        return web.json_response({'status': True}, status=200) # if verification else web.json_response({'status': False}, status=401)
+    except Exception:
+        print(f'Login attempt, success={False}', datetime.now())
+        return web.json_response({'status': 'Missing login or password'}, status=401)
 
 
 app = web.Application()
