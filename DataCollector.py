@@ -8,13 +8,15 @@ import psutil
 class Database:
     def __init__(self):
         self.conn = conn = sqlite3.connect('updatable.db')
-        self.c = c = conn.cursor()
+        self.c = conn.cursor()
+        self.loop = None
+        self.task = None
 
-        c.execute("""CREATE TABLE IF NOT EXISTS datatable(id INTEGER PRIMARY KEY AUTOINCREMENT, curr_cpu_freq FLOAT, 
+        self.c.execute("""CREATE TABLE IF NOT EXISTS datatable(id INTEGER PRIMARY KEY AUTOINCREMENT, curr_cpu_freq FLOAT, 
         available_ram FLOAT, used_ram FLOAT, available_swap FLOAT, used_swap FLOAT, timestamp DATE)""")
 
-        loop = asyncio.get_event_loop()
-        task = loop.create_task(self.update())
+        self.loop = asyncio.get_event_loop()
+        self.task = self.loop.create_task(self.update())
 
     async def update(self):
         while True:

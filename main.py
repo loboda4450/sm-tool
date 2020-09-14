@@ -83,20 +83,18 @@ async def network_info(request):
 
 @routes.get('/smtool/api/v0.1/process_info')
 async def process_info(request):
-    info_dict = list()
-    key = 0
+    info = list()
     for process in psutil.process_iter():
         try:
-            info_dict.append({'Process name': process.name(),
-                              'PID': process.pid,
-                              'Woken by': process.username(),
-                              'Status': process.status()})
+            info.append({'Process name': process.name(),
+                         'PID': process.pid,
+                         'Woken by': process.username(),
+                         'Status': process.status()})
 
-            key += 1
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
 
-    return web.json_response({'Process list': info_dict}, status=200)
+    return web.json_response({'Process list': info}, status=200)
 
 
 @routes.get('/smtool/api/v0.1/data_collector')
