@@ -129,7 +129,7 @@ async def collect_swap_info(request):
     return web.json_response(await db.get_swap_data(), status=200)
 
 
-@routes.get('/smtool/api/v0.1/verify')
+@routes.post('/smtool/api/v0.1/verify')
 async def verify_access(request):
     try:
         login = request.rel_url.query['login']
