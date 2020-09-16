@@ -114,6 +114,21 @@ async def collect_info(request):
     return web.json_response(await db.get_data(), status=200)
 
 
+@routes.get('/smtool/api/v0.1/cpu_info')
+async def collect_cpu_info(request):
+    return web.json_response(await db.get_cpu_data(), status=200)
+
+
+@routes.get('/smtool/api/v0.1/ram_info')
+async def collect_ram_info(request):
+    return web.json_response(await db.get_ram_data(), status=200)
+
+
+@routes.get('/smtool/api/v0.1/swap_info')
+async def collect_swap_info(request):
+    return web.json_response(await db.get_swap_data(), status=200)
+
+
 @routes.get('/smtool/api/v0.1/verify')
 async def verify_access(request):
     try:
@@ -122,9 +137,10 @@ async def verify_access(request):
         verification = await verify(login, passwd)
         print(f'Login attempt, login={login}, password={passwd}, success={verification}', datetime.now())
 
-        return web.json_response({'status': True}, status=200) # if verification else web.json_response({'status': False}, status=401)
-    except Exception:
-        print(f'Login attempt, success={False}', datetime.now())
+        return web.json_response({'status': True},
+                                 status=200) if verification else web.json_response({'status': False}, status=401)
+    except Exception as e:
+        print(f'Login attempt, success={False}', {str(e)}, datetime.now())
         return web.json_response({'status': 'Missing login or password'}, status=401)
 
 
