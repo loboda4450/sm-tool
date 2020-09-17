@@ -12,7 +12,7 @@ class Database:
         self.loop = None
         self.task = None
 
-        self.c.execute("""CREATE TABLE IF NOT EXISTS datatable(id INTEGER PRIMARY KEY AUTOINCREMENT, curr_cpu_freq FLOAT, 
+        self.c.execute("""CREATE TABLE IF NOT EXISTS datatable(id INTEGER PRIMARY KEY AUTOINCREMENT, curr_cpu_freq INTEGER, 
         available_ram FLOAT, used_ram FLOAT, available_swap FLOAT, used_swap FLOAT, timestamp DATE)""")
 
         self.loop = asyncio.get_event_loop()
@@ -40,31 +40,27 @@ class Database:
                                     'usedswap': row[4],
                                     'timestamp': row[5]} for row in
                                    self.c.execute(
-                                       """SELECT curr_cpu_freq, available_ram, used_ram, available_swap, used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720""")]}
+                                       """SELECT * FROM (SELECT curr_cpu_freq, available_ram, used_ram, available_swap, used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720) ORDER BY timestamp ASC""")]}
 
     async def get_cpu_data(self):
         print('CPU data accesed', datetime.now())
-        return {'maxcpufreq': round(psutil.cpu_freq().max),
-                'mincpufreq': round(psutil.cpu_freq().min),
-                'Collected data': [{'cpufreq': row[0],
+        return {'Collected data': [{'cpufreq': row[0],
                                     'timestamp': row[1]}
                                    for row in self.c.execute(
-                        """SELECT curr_cpu_freq, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720""")]}
+                        """SELECT * FROM (SELECT curr_cpu_freq, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720) ORDER BY timestamp ASC""")]}
 
     async def get_ram_data(self):
         print('RAM data accesed', datetime.now())
-        return {'ramcapacity': round(psutil.virtual_memory().total / 1073741824, 2),
-                'Collected data': [{'availram': row[0],
+        return {'Collected data': [{'availram': row[0],
                                     'usedram': row[1],
                                     'timestamp': row[2]}
                                    for row in self.c.execute(
-                        """SELECT available_ram, used_ram, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720""")]}
+                        """SELECT * FROM (SELECT available_ram, used_ram, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720) ORDER BY timestamp ASC""")]}
 
     async def get_swap_data(self):
         print('SWAP data accesed', datetime.now())
-        return {'swapcapacity': round(psutil.swap_memory().total / 1073741824, 2),
-                'Collected data': [{'availswap': row[0],
+        return {'Collected data': [{'availswap': row[0],
                                     'usedswap': row[1],
                                     'timestamp': row[2]}
                                    for row in self.c.execute(
-                        """SELECT available_swap, used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720""")]}
+                        """SELECT * FROM (SELECT available_swap, used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720) ORDER BY timestamp ASC""")]}
