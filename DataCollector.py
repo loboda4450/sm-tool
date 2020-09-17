@@ -51,16 +51,14 @@ class Database:
 
     async def get_ram_data(self):
         print('RAM data accesed', datetime.now())
-        return {'Collected data': [{'availram': row[0],
-                                    'usedram': row[1],
-                                    'timestamp': row[2]}
+        return {'Collected data': [{'usedram': row[0],
+                                    'timestamp': row[1]}
                                    for row in self.c.execute(
-                        """SELECT * FROM (SELECT available_ram, used_ram, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720) ORDER BY timestamp ASC""")]}
+                        """SELECT * FROM (SELECT used_ram, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720) ORDER BY timestamp ASC""")]}
 
     async def get_swap_data(self):
         print('SWAP data accesed', datetime.now())
-        return {'Collected data': [{'availswap': row[0],
-                                    'usedswap': row[1],
-                                    'timestamp': row[2]}
+        return {'Collected data': [{'usedswap': row[0],
+                                    'timestamp': row[1]}
                                    for row in self.c.execute(
-                        """SELECT * FROM (SELECT available_swap, used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720) ORDER BY timestamp ASC""")]}
+                        """SELECT * FROM (SELECT used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720) ORDER BY timestamp ASC""")]}
