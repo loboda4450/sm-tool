@@ -20,12 +20,14 @@ class Database:
 
     async def update(self):
         while True:
-            timestamp = datetime.now()
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             print('Adding value to db', timestamp)
             self.c.execute(
                 "INSERT INTO datatable (curr_cpu_freq, available_ram, used_ram, available_swap, used_swap, timestamp) VALUES (?, ?, ?, ?, ?, ?)",
-                (round(psutil.cpu_freq().current, 2), round(psutil.virtual_memory().available/1073741824, 2), round(psutil.virtual_memory().used/1073741824, 2),
-                 round(psutil.swap_memory().free/1073741824, 2), round(psutil.swap_memory().used/1073741824, 2), timestamp))
+                (round(psutil.cpu_freq().current), round(psutil.virtual_memory().available / 1073741824, 2),
+                 round(psutil.virtual_memory().used / 1073741824, 2),
+                 round(psutil.swap_memory().free / 1073741824, 2), round(psutil.swap_memory().used / 1073741824, 2),
+                 timestamp))
             self.conn.commit()
             await asyncio.sleep(1)
 
@@ -37,27 +39,32 @@ class Database:
                                     'availswap': row[3],
                                     'usedswap': row[4],
                                     'timestamp': row[5]} for row in
-                                   self.c.execute("""SELECT curr_cpu_freq, available_ram, used_ram, available_swap, used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 21600""")]}
+                                   self.c.execute(
+                                       """SELECT curr_cpu_freq, available_ram, used_ram, available_swap, used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720""")]}
 
     async def get_cpu_data(self):
         print('CPU data accesed', datetime.now())
-        return {'Collected data': [{'cpufreq': row[0],
+        return {'maxcpufreq': round(psutil.cpu_freq().max),
+                'mincpufreq': round(psutil.cpu_freq().min),
+                'Collected data': [{'cpufreq': row[0],
                                     'timestamp': row[1]}
                                    for row in self.c.execute(
-                """SELECT curr_cpu_freq, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 21600""")]}
+                        """SELECT curr_cpu_freq, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720""")]}
 
     async def get_ram_data(self):
         print('RAM data accesed', datetime.now())
-        return {'Collected data': [{'availram': row[0],
+        return {'ramcapacity': round(psutil.virtual_memory().total / 1073741824, 2),
+                'Collected data': [{'availram': row[0],
                                     'usedram': row[1],
                                     'timestamp': row[2]}
                                    for row in self.c.execute(
-                """SELECT available_ram, used_ram, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 21600""")]}
+                        """SELECT available_ram, used_ram, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720""")]}
 
     async def get_swap_data(self):
         print('SWAP data accesed', datetime.now())
-        return {'Collected data': [{'availswap': row[0],
+        return {'swapcapacity': round(psutil.swap_memory().total / 1073741824, 2),
+                'Collected data': [{'availswap': row[0],
                                     'usedswap': row[1],
                                     'timestamp': row[2]}
                                    for row in self.c.execute(
-                """SELECT available_swap, used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 21600""")]}
+                        """SELECT available_swap, used_swap, timestamp FROM datatable ORDER BY timestamp DESC LIMIT 720""")]}
