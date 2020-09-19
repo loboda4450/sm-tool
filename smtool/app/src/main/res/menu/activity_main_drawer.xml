@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_disks"
+            android:icon="@drawable/ic_disk_icon"
+            android:title="@string/menu_disks" />
+        <item
+            android:id="@+id/nav_networking"
+            android:icon="@drawable/ic_network_icon"
+            android:title="@string/menu_networking" />
+        <item
+            android:id="@+id/nav_processes"
+            android:icon="@drawable/ic_processes_icon"
+            android:title="@string/menu_processes" />
+        <item
+            android:id="@+id/nav_cpu_graphs"
+            android:icon="@drawable/ic_graphs_icon"
+            android:title="@string/menu_cpu_graphs" />
+        <item
+            android:id="@+id/nav_ram_graphs"
+            android:icon="@drawable/ic_graphs_icon"
+            android:title="@string/menu_ram_graphs" />
+        <item
+            android:id="@+id/nav_swap_graphs"
+            android:icon="@drawable/ic_graphs_icon"
+            android:title="@string/menu_swap_graphs" />
+    </group>
+</menu>

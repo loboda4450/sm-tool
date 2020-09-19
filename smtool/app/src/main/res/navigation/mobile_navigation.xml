@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.smtool.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_disks"
+        android:name="com.example.smtool.ui.disks.DiskFragment"
+        android:label="@string/menu_disks"
+        tools:layout="@layout/fragment_disks" />
+
+    <fragment
+        android:id="@+id/nav_networking"
+        android:name="com.example.smtool.ui.networking.NetworkFragment"
+        android:label="@string/menu_networking"
+        tools:layout="@layout/fragment_networking" />
+
+    <fragment
+        android:id="@+id/nav_processes"
+        android:name="com.example.smtool.ui.processes.ProcessesFragment"
+        android:label="@string/menu_processes"
+        tools:layout="@layout/fragment_processes" />
+
+    <fragment
+        android:id="@+id/nav_cpu_graphs"
+        android:name="com.example.smtool.ui.cpu_graphs.CpuGraphsFragment"
+        android:label="@string/menu_cpu_graphs"
+        tools:layout="@layout/fragment_graphs" />
+
+    <fragment
+        android:id="@+id/nav_ram_graphs"
+        android:name="com.example.smtool.ui.ram_graphs.RamGraphsFragment"
+        android:label="@string/menu_ram_graphs"
+        tools:layout="@layout/fragment_graphs" />
+
+    <fragment
+        android:id="@+id/nav_swap_graphs"
+        android:name="com.example.smtool.ui.swap_graphs.SwapGraphsFragment"
+        android:label="@string/menu_swap_graphs"
+        tools:layout="@layout/fragment_graphs" />
+</navigation>

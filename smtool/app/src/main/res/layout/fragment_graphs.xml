@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="0dp"
+    android:paddingStart="0dp"
+    android:paddingBottom="0dp"
+    android:paddingEnd="0dp"
+    tools:context=".ui.cpu_graphs.CpuGraphsFragment">
+
+    <TableLayout
+        android:id="@+id/graph_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="200dip"
+            android:id="@+id/graph" />
+
+    </TableLayout>
+
+</ScrollView>

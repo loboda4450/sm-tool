@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">SMTool</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">SMTool</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_disks">Disks</string>
+    <string name="menu_networking">Networking</string>
+    <string name="menu_processes">Processes</string>
+    <string name="menu_cpu_graphs">CPU graph</string>
+    <string name="menu_ram_graphs">RAM graph</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="ip_title">Your server IP</string>
+    <string name="port_title">Your server Port</string>
+    <string name="login_title">Your username</string>
+    <string name="pass_title">Your password</string>
+
+    <!-- Preference Titles -->
+    <string name="connection_header">Connection settings</string>
+    <string name="login_header">Verification data</string>
+
+    <!-- Titles -->
+    <string name="cpu_usage_label">CPU usage: </string>
+    <string name="mem_usage_label">Memory usage: </string>
+    <string name="network_usage_label">Network usage: </string>
+
+    <!--settings -->
+    <string name="ip">192.168.8.141</string>
+    <string name="port">8080</string>
+    <string name="login">x</string>
+    <string name="menu_swap_graphs">SWAP graph</string>
+</resources>

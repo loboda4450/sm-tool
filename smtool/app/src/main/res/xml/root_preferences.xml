@@ -1,0 +1,37 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/connection_header">
+
+        <EditTextPreference
+            app:key="ip"
+            app:title="@string/ip_title"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="Not set" />
+
+        <EditTextPreference
+            app:key="port"
+            app:title="@string/port_title"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="Not set" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/login_header">
+
+        <EditTextPreference
+            app:key="login"
+            app:title="@string/login_title"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="Not set" />
+
+        <EditTextPreference
+            app:key="password"
+            app:title="@string/pass_title"
+            app:useSimpleSummaryProvider="true"
+            android:inputType="textPassword"
+            app:defaultValue="Not set" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
